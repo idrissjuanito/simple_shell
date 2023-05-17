@@ -94,7 +94,7 @@ void non_interact_shell(char **line, char *shell)
 
 	while ((cread = getline(line, &len, stdin)) > 0)
 	{
-		parse_cmd(*line, args, &path);
+		parse_scmd(*line, args, &path);
 		switch (fork())
 		{
 			case -1:
@@ -140,7 +140,7 @@ void interact_shell(char **line, char *shell)
 			fprintf(stderr, "%s: No such Directory\n", shell);
 			continue;
 		}
-		parse_cmd(*line, args, &path);
+		parse_scmd(*line, args, &path);
 		chid = fork();
 		switch (chid)
 		{
