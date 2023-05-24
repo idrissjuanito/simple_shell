@@ -21,10 +21,13 @@ void interact_shell(char **line, char *shell)
 	while (1)
 	{
 		clearerr(stdin);
-		printf("($) ");
+		printf("#cisfun$ ");
 		cread = getline(line, &len, stdin);
 		if (cread <= 0)
+		{
+			perror(shell);
 			continue;
+		}
 		if (strcmp(*line, "exit\n") == 0)
 		{
 			exit(98);
@@ -32,7 +35,7 @@ void interact_shell(char **line, char *shell)
 		path = parse_cmd(*line, args);
 		if (!path)
 		{
-			perror(args[0]);
+			perror(shell);
 			continue;
 		}
 		switch (fork())
@@ -42,7 +45,7 @@ void interact_shell(char **line, char *shell)
 				break;
 			case 0:
 				execve(path, args, environ);
-				exitOnError(shell, args[0]);
+				exitOnError(shell, shell);
 				break;
 			default:
 				wait(&status);
@@ -81,7 +84,7 @@ void non_interact_shell(char **line, char *shell)
 				break;
 			case 0:
 				execve(path, args, envp);
-				exitOnError(shell, args[0]);
+				exitOnError(shell, shell);
 				break;
 			default:
 				wait(&status);

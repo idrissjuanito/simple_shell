@@ -10,8 +10,8 @@
  */
 void handle_exit(int status, void *line)
 {
-	free(*(char **)line);
-	printf("exiting with status: %d\n", status);
+	if (status >= 0)
+		free(*(char **)line);
 }
 
 /**
