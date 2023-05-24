@@ -1,7 +1,6 @@
-#define _GNU_SOURCE
 #include "utils.h"
 
-extern char **environ;
+
 /**
  * main - entry to the shell program
  *
@@ -13,7 +12,10 @@ extern char **environ;
 int main(int argc, char **argv)
 {
 	char *line = NULL;
-	
+
+	signal(SIGINT, handle_signals);
+	on_exit(handle_exit, &line);
+
 	if (!isatty(STDIN_FILENO))
 	{
 		if (argc > 1)
@@ -21,9 +23,6 @@ int main(int argc, char **argv)
 		non_interact_shell(&line, argv[0]);
 	}
 	else
-	{
 		interact_shell(&line, argv[0]);
-	}
-	free(line);
 	exit(EXIT_SUCCESS);
 }

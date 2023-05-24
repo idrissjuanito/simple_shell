@@ -4,6 +4,7 @@
  * exitOnError - exits the current process in case of error
  *
  * @shell: the running shell
+ * @cmd: command typed
  *
  * Return: nothing
  */
