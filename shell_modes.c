@@ -89,6 +89,5 @@ void non_interact_shell(char **line, char *shell)
 		}
 		free(path);
 	}
-	free(*line);
 	exit(status);
 }

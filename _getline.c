@@ -62,10 +62,12 @@ ssize_t _getline(char **line, size_t *len, FILE *stream)
 	static off_t offset;
 	char buf[BUFSIZE], *line_buf;
 
+	fflush(stdout);
 	line_buf = init_params(line, len);
 	if (!line_buf)
 		return (-1);
 	fd = fileno(stream);
+	fd = dup2(fd, 9);
 	lseek(fd, offset, SEEK_SET);
 	while ((reads = read(fd, buf, BUFSIZE)) > 0)
 	{
@@ -87,10 +89,10 @@ ssize_t _getline(char **line, size_t *len, FILE *stream)
 		if (buf[i] == '\n')
 			break;
 	}
+	printf("%d \n", (int)reads);
 	if (reads < 1)
 		return (-1);
 	*(line_buf + 1)  = '\0';
 	offset += ++j + 1;
-	close(fd);
 	return (j);
 }
