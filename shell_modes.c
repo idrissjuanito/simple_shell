@@ -22,7 +22,7 @@ void interact_shell(char **line, char *shell)
 	{
 		clearerr(stdin);
 		printf("($) ");
-		cread = _getline(line, &len, stdin);
+		cread = getline(line, &len, stdin);
 		if (cread <= 0)
 			continue;
 		if (strcmp(*line, "exit\n") == 0)
@@ -69,7 +69,7 @@ void non_interact_shell(char **line, char *shell)
 	char **const envp = environ;
 	int status = 0;
 
-	while ((cread = _getline(line, &len, stdin)) > 0)
+	while ((cread = getline(line, &len, stdin)) > 0)
 	{
 		path = parse_cmd(*line, args);
 		if (!path)
