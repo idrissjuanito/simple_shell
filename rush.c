@@ -25,5 +25,5 @@ int main(int argc, char **argv)
 	}
 	else
 		interact_shell(&line, argv[0]);
-	return (0);
+	exit(EXIT_SUCCESS);
 }

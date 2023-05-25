@@ -28,10 +28,10 @@ void interact_shell(char **line, char *shell)
 			perror(shell);
 			continue;
 		}
-		if (strcmp(*line, "exit\n") == 0)
-		{
-			exit(98);
-		}
+		/*if (strcmp(*line, "exit\n") == 0)*/
+		/*{*/
+			/*exit(98);*/
+		/*}*/
 		path = parse_cmd(*line, args);
 		if (!path)
 		{
