@@ -14,9 +14,11 @@ char *trim_string(char *str)
 {
 	char *str_end;
 
-	str = strsep(&str, "\n");
-	while (*str == ' ')
+	while (*str == ' ' && *str != '\n')
 		str++;
+	if (*str == '\n')
+		return (NULL);
+	str = strsep(&str, "\n");
 	str_end = str + strlen(str) - 1;
 	while (*str_end == ' ')
 		str_end--;
@@ -88,10 +90,10 @@ char *parse_cmd(char *line, char **args)
 	char *token = NULL, *path = NULL;
 	char *pathdirs, cmd[80];
 	int i = 0;
-
-	token = strtok(trim_string(line), " ");
-	if (!token)
+	
+	if (!trim_string(line))
 		return (NULL);
+	token = strtok(line, " ");
 	args[i] = token;
 	while ((token = strtok(NULL, " ")))
 		args[++i] = trim_string(token);
