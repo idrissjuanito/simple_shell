@@ -15,16 +15,32 @@ void handle_exit(int status, void *line)
 		free(*(char **)line);
 }
 
+/**
+ * _on_exit - terminates the shell
+ *
+ * @exit_func: pointer to function handler
+ * @args: arguments to pass to function
+ *
+ * Return: nothing
+ */
 void _on_exit(void (*exit_func)(int, void *), void *args)
 {
 	static int reg;
-	exit_func_t *f = malloc( sizeof(exit_func_t));
+	exit_func_t *f = malloc(sizeof(exit_func_t));
 
 	f->func_name = exit_func;
 	f->args = args;
 	exit_function[reg] = f;
 	reg++;
 }
+
+/**
+ * exit_ - exit function to terminate a shel
+ *
+ * @status: termination status
+ *
+ * Return: nothing
+ */
 void exit_(int status)
 {
 	int i = 0;
@@ -33,7 +49,7 @@ void exit_(int status)
 
 	while (exit_function[i])
 	{
-		func = exit_function[i]->func_name;	
+		func = exit_function[i]->func_name;
 		args = exit_function[i]->args;
 		func(status, args);
 		free(exit_function[i]);
@@ -54,5 +70,5 @@ void exit_(int status)
 void handle_signals(int sig)
 {
 	if (sig == SIGINT)
-		exit(98);
+		exit(EXIT_SUCCESS);
 }
