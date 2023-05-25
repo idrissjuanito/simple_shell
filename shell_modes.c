@@ -30,7 +30,7 @@ void interact_shell(char **line, char *shell)
 		}
 		if (strcmp(*line, "exit\n") == 0)
 		{
-			exit_(98);
+			exit(98);
 		}
 		path = parse_cmd(*line, args);
 		if (!path)
@@ -53,7 +53,7 @@ void interact_shell(char **line, char *shell)
 		}
 		free(path);
 	}
-	exit_(status);
+	exit(status);
 }
 
 /**
@@ -92,5 +92,5 @@ void non_interact_shell(char **line, char *shell)
 		}
 		free(path);
 	}
-	exit_(status);
+	exit(status);
 }

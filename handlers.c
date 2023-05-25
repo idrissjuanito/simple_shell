@@ -54,5 +54,5 @@ void exit_(int status)
 void handle_signals(int sig)
 {
 	if (sig == SIGINT)
-		exit_(98);
+		exit(98);
 }
