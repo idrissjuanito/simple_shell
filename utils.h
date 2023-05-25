@@ -9,6 +9,12 @@
 #include <signal.h>
 #include <sys/types.h>
 extern char **environ;
+typedef struct exit_func {
+	void (*func_name)(int, void *);
+	void *args;
+} exit_func_t;
+void _on_exit(void (*exit_func)(int, void *), void *args);
+void exit_(int status);
 char *parse_cmd(char *line, char **args);
 void interact_shell(char **line, char *shell);
 void non_interact_shell(char **line, char *shell);

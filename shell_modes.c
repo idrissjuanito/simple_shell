@@ -30,7 +30,7 @@ void interact_shell(char **line, char *shell)
 		}
 		if (strcmp(*line, "exit\n") == 0)
 		{
-			exit(98);
+			exit_(98);
 		}
 		path = parse_cmd(*line, args);
 		if (!path)

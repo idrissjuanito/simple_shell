@@ -12,5 +12,5 @@ void exitOnError(char *shell, char *cmd)
 {
 	if (cmd)
 		fprintf(stderr, "%s: %s\n", shell, strerror(errno));
-	exit(EXIT_FAILURE);
+	exit_(EXIT_FAILURE);
 }
