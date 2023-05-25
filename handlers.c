@@ -14,3 +14,16 @@ void handle_exit(int status, void *line)
 	if (status >= 0)
 		free(*(char **)line);
 }
+
+/**
+ * handle_signals - handles signals sent to shell
+ *
+ * @sig: signal to handle
+ *
+ * Return: nothing
+ */
+void handle_signals(int sig)
+{
+	if (sig == SIGINT)
+		exit(EXIT_SUCCESS);
+}
