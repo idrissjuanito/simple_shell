@@ -10,7 +10,7 @@
 #include <sys/types.h>
 extern char **environ;
 /**
- * exit_func - exit function handlers types
+ * struct exit_func - exit function handlers types
  *
  * @func_name: name of func handler
  * @args: args of the exit handler

@@ -90,7 +90,7 @@ char *parse_cmd(char *line, char **args)
 	char *token = NULL, *path = NULL;
 	char *pathdirs, cmd[80];
 	int i = 0;
-	
+
 	if (!trim_string(line))
 		return (NULL);
 	token = strtok(line, " ");
