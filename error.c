@@ -8,9 +8,8 @@
  *
  * Return: nothing
  */
-void exitOnError(char *shell, char *cmd)
+void exitOnError(char *shell)
 {
-	if (cmd)
-		fprintf(stderr, "%s: %s\n", shell, strerror(errno));
+	fprintf(stderr, "%s: %s\n", shell, strerror(errno));
 	exit(EXIT_FAILURE);
 }
