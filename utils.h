@@ -32,5 +32,5 @@ void break_cmd(char **args, char *cmd);
 void handle_signals(int sig);
 void handle_exit(int status, void *line);
 ssize_t _getline(char **line, size_t *len, FILE *stream);
-int builtin(char *cmd, char **args, char *shell);
+int builtin(char **args, char *shell);
 #endif

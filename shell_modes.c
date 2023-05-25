@@ -60,7 +60,7 @@ void interact_shell(char **line, char *shell)
 		if (!trim_string(*line))
 			continue;
 		break_cmd(args, *line);
-		if (builtin(*line, args, shell))
+		if (builtin(args, shell))
 			continue;
 		path = parse_cmd(args);
 		if (!path)
@@ -93,7 +93,7 @@ void non_interact_shell(char **line, char *shell)
 		if (!trim_string(*line))
 			continue;
 		break_cmd(args, *line);
-		if (builtin(*line, args, shell))
+		if (builtin(args, shell))
 			continue;
 		path = parse_cmd(args);
 		if (!path)
