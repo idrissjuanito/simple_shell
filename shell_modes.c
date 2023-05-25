@@ -26,6 +26,7 @@ void interact_shell(char **line, char *shell)
 		if (cread <= 0)
 		{
 			perror(shell);
+			fflush(stdout);
 			continue;
 		}
 		/*if (strcmp(*line, "exit\n") == 0)*/
@@ -34,18 +35,15 @@ void interact_shell(char **line, char *shell)
 		/*}*/
 		path = parse_cmd(*line, args);
 		if (!path)
-		{
-			perror(shell);
 			continue;
-		}
 		switch (fork())
 		{
 			case -1:
-				exitOnError(shell, args[0]);
+				exitOnError(shell);
 				break;
 			case 0:
 				execve(path, args, environ);
-				exitOnError(shell, shell);
+				exitOnError(shell);
 				break;
 			default:
 				wait(&status);
@@ -76,15 +74,15 @@ void non_interact_shell(char **line, char *shell)
 	{
 		path = parse_cmd(*line, args);
 		if (!path)
-			exitOnError(shell, *line);
+			continue;
 		switch (fork())
 		{
 			case -1:
-				exitOnError(shell, args[0]);
+				exitOnError(shell);
 				break;
 			case 0:
 				execve(path, args, envp);
-				exitOnError(shell, shell);
+				exitOnError(shell);
 				break;
 			default:
 				wait(&status);

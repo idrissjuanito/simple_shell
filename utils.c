@@ -90,11 +90,15 @@ char *parse_cmd(char *line, char **args)
 	int i = 0;
 
 	token = strtok(trim_string(line), " ");
+	if (!token)
+		return (NULL);
 	args[i] = token;
 	while ((token = strtok(NULL, " ")))
 		args[++i] = trim_string(token);
 	args[++i] = NULL;
 	strcpy(cmd, args[0]);
+	if (builtin(*args))
+		return (NULL);
 	token = strtok(args[0], "/");
 	i = 0;
 	while ((token = strtok(NULL, "/")))
