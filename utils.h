@@ -9,7 +9,14 @@
 #include <signal.h>
 #include <sys/types.h>
 extern char **environ;
-typedef struct exit_func {
+/**
+ * exit_func - exit function handlers types
+ *
+ * @func_name: name of func handler
+ * @args: args of the exit handler
+ */
+typedef struct exit_func
+{
 	void (*func_name)(int, void *);
 	void *args;
 } exit_func_t;
@@ -20,6 +27,7 @@ void interact_shell(char **line, char *shell);
 void non_interact_shell(char **line, char *shell);
 void exitOnError(char *shell);
 char *find_path(char *cmd);
+char *trim_string(char *cmd);
 void handle_signals(int sig);
 void handle_exit(int status, void *line);
 ssize_t _getline(char **line, size_t *len, FILE *stream);

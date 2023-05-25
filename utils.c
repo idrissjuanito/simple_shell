@@ -99,8 +99,6 @@ char *parse_cmd(char *line, char **args)
 		args[++i] = trim_string(token);
 	args[++i] = NULL;
 	strcpy(cmd, args[0]);
-	if (builtin(*args))
-		return (NULL);
 	token = strtok(args[0], "/");
 	i = 0;
 	while ((token = strtok(NULL, "/")))

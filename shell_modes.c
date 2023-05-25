@@ -2,7 +2,36 @@
 #include <sys/wait.h>
 #include "utils.h"
 
+/**
+ * run_cmd - creates a child process and runs command
+ *
+ * @p: path of the command to run
+ * @args: arguments of the command to run
+ * @shell: running shell
+ *
+ * Return: nothing
+ */
+int run_cmd(char *p, char **args, char *shell)
+{
+	int status = 0;
 
+	switch (fork())
+	{
+		case -1:
+			exitOnError(shell);
+			break;
+		case 0:
+			execve(p, args, environ);
+			exitOnError(shell);
+			break;
+		default:
+			wait(&status);
+			break;
+	}
+	free(p);
+
+	return (status);
+}
 /**
  * interact_shell - run shell in non interactive mode
  *
@@ -26,30 +55,17 @@ void interact_shell(char **line, char *shell)
 		if (cread <= 0)
 		{
 			perror(shell);
-			fflush(stdout);
 			continue;
 		}
-		/*if (strcmp(*line, "exit\n") == 0)*/
-		/*{*/
-			/*exit(98);*/
-		/*}*/
+		if (builtin(*line))
+			continue;
 		path = parse_cmd(*line, args);
 		if (!path)
-			continue;
-		switch (fork())
 		{
-			case -1:
-				exitOnError(shell);
-				break;
-			case 0:
-				execve(path, args, environ);
-				exitOnError(shell);
-				break;
-			default:
-				wait(&status);
-				break;
+			perror(shell);
+			continue;
 		}
-		free(path);
+		status = run_cmd(path, args, shell);
 	}
 	exit(status);
 }
@@ -67,28 +83,20 @@ void non_interact_shell(char **line, char *shell)
 	size_t len = 0;
 	ssize_t cread = 0;
 	char *args[100], *path;
-	char **const envp = environ;
 	int status = 0;
 
 	while ((cread = getline(line, &len, stdin)) > 0)
 	{
+		if (builtin(*line))
+			continue;
 		path = parse_cmd(*line, args);
 		if (!path)
-			continue;
-		switch (fork())
 		{
-			case -1:
-				exitOnError(shell);
-				break;
-			case 0:
-				execve(path, args, envp);
-				exitOnError(shell);
-				break;
-			default:
-				wait(&status);
-				break;
+			perror(shell);
+			continue;
 		}
-		free(path);
+		run_cmd(path, args, shell);
 	}
+
 	exit(status);
 }
