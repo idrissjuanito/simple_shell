@@ -14,13 +14,13 @@ int main(int argc, char **argv)
 	char *line = NULL;
 
 	signal(SIGINT, handle_signals);
-	_on_exit(handle_exit, &line);
-	/*on_exit(handle_exit, &line);*/
+	/*_on_exit(handle_exit, &line);*/
+	on_exit(handle_exit, &line);
 
 	if (!isatty(STDIN_FILENO))
 	{
 		if (argc > 1)
-			return (1);
+			exit(EXIT_FAILURE);
 		non_interact_shell(&line, argv[0]);
 	}
 	else

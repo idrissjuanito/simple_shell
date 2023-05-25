@@ -19,6 +19,7 @@ void _on_exit(void (*exit_func)(int, void *), void *args)
 {
 	static int reg;
 	exit_func_t *f = malloc( sizeof(exit_func_t));
+
 	f->func_name = exit_func;
 	f->args = args;
 	exit_function[reg] = f;
@@ -30,12 +31,13 @@ void exit_(int status)
 	void (*func)(int, void *);
 	void *args;
 
-	if (exit_function[i])
+	while (exit_function[i])
 	{
 		func = exit_function[i]->func_name;	
 		args = exit_function[i]->args;
 		func(status, args);
 		free(exit_function[i]);
+		i++;
 	}
 	fflush(stdout);
 	fflush(stdin);

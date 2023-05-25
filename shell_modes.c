@@ -53,7 +53,7 @@ void interact_shell(char **line, char *shell)
 		}
 		free(path);
 	}
-	exit(98);
+	exit_(status);
 }
 
 /**
@@ -92,5 +92,5 @@ void non_interact_shell(char **line, char *shell)
 		}
 		free(path);
 	}
-	exit(status);
+	exit_(status);
 }
