@@ -78,6 +78,25 @@ char *find_path(char *cmd)
 }
 
 /**
+ * break_cmd: spilts a command into arguments
+ *
+ * @args: array of strings to store arguments
+ * @cmd: command to slipt
+ *
+ * Return: nothing
+ */
+void break_cmd(char **args, char *cmd)
+{
+	char *token = NULL;
+	int i = 0;
+
+	token = strtok(cmd, " ");
+	args[i] = token;
+	while ((token = strtok(NULL, " ")))
+		args[++i] = trim_string(token);
+	args[++i] = NULL;
+}
+/**
  * parse_cmd - parses a string into command line format
  *
  * @line: line of commands
@@ -93,11 +112,7 @@ char *parse_cmd(char *line, char **args)
 
 	if (!trim_string(line))
 		return (NULL);
-	token = strtok(line, " ");
-	args[i] = token;
-	while ((token = strtok(NULL, " ")))
-		args[++i] = trim_string(token);
-	args[++i] = NULL;
+	break_cmd(args, line);
 	strcpy(cmd, args[0]);
 	token = strtok(args[0], "/");
 	i = 0;

@@ -28,6 +28,7 @@ void non_interact_shell(char **line, char *shell);
 void exitOnError(char *shell);
 char *find_path(char *cmd);
 char *trim_string(char *cmd);
+void break_cmd(char **args, char *cmd);
 void handle_signals(int sig);
 void handle_exit(int status, void *line);
 ssize_t _getline(char **line, size_t *len, FILE *stream);

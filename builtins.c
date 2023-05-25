@@ -9,11 +9,21 @@
 int builtin(char *cmd)
 {
 	int i = 0;
+	char *args[100];
+	int status = 0;
 
 	if (!trim_string(cmd))
 		return (1);
-	if (strcmp("exit", cmd) == 0)
+	break_cmd(args, cmd);
+	if (strcmp("exit", args[0]) == 0)
+	{
+		if (args[1])
+		{
+			status = atoi(args[1]);
+			exit(status);
+		}
 		exit(EXIT_SUCCESS);
+	}
 	if (strcmp("env", cmd) == 0)
 	{
 		while (environ[i])
