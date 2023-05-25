@@ -3,26 +3,29 @@
  * builtin - checks if a command is built in
  *
  * @cmd: buffer with command and arguments
+ * @args: for storing arguments of the command
+ * @shell: running shell
  *
  * Return: 1 if builtin and 0 if not
  */
-int builtin(char *cmd)
+int builtin(char *cmd, char **args, char *shell)
 {
 	int i = 0;
-	char *args[100];
 	int status = 0;
+	char *err = "Illegal number";
 
-	if (!trim_string(cmd))
-		return (1);
-	break_cmd(args, cmd);
 	if (strcmp("exit", args[0]) == 0)
 	{
 		if (args[1])
 		{
 			status = atoi(args[1]);
-			exit(status);
+			if (!status || status < 0)
+			{
+				fprintf(stderr, "%s: 1: %s: %s: %s\n", shell, args[0], err, args[1]);
+				exit(2);
+			}
 		}
-		exit(EXIT_SUCCESS);
+		exit(status);
 	}
 	if (strcmp("env", cmd) == 0)
 	{

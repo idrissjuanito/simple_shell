@@ -22,7 +22,7 @@ typedef struct exit_func
 } exit_func_t;
 void _on_exit(void (*exit_func)(int, void *), void *args);
 void exit_(int status);
-char *parse_cmd(char *line, char **args);
+char *parse_cmd(char **args);
 void interact_shell(char **line, char *shell);
 void non_interact_shell(char **line, char *shell);
 void exitOnError(char *shell);
@@ -32,5 +32,5 @@ void break_cmd(char **args, char *cmd);
 void handle_signals(int sig);
 void handle_exit(int status, void *line);
 ssize_t _getline(char **line, size_t *len, FILE *stream);
-int builtin(char *cmd);
+int builtin(char *cmd, char **args, char *shell);
 #endif

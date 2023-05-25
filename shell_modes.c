@@ -57,9 +57,12 @@ void interact_shell(char **line, char *shell)
 			perror(shell);
 			continue;
 		}
-		if (builtin(*line))
+		if (!trim_string(*line))
 			continue;
-		path = parse_cmd(*line, args);
+		break_cmd(args, *line);
+		if (builtin(*line, args, shell))
+			continue;
+		path = parse_cmd(args);
 		if (!path)
 		{
 			perror(shell);
@@ -87,9 +90,12 @@ void non_interact_shell(char **line, char *shell)
 
 	while ((cread = getline(line, &len, stdin)) > 0)
 	{
-		if (builtin(*line))
+		if (!trim_string(*line))
 			continue;
-		path = parse_cmd(*line, args);
+		break_cmd(args, *line);
+		if (builtin(*line, args, shell))
+			continue;
+		path = parse_cmd(args);
 		if (!path)
 		{
 			perror(shell);
