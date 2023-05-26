@@ -80,6 +80,8 @@ int change_dir(char **args, char *shell)
 
 	if (!args[1])
 		dest = getenv("HOME");
+	else if (strcmp(args[1], "-") == 0)
+		dest = getenv("OLDPWD");
 	else
 		dest = args[1];
 	setenv("OLDPWD", getcwd(cwdir_buf, PATH_MAX), 1);
