@@ -87,8 +87,8 @@ int change_dir(char **args, char *shell)
 	setenv("OLDPWD", getcwd(cwdir_buf, PATH_MAX), 1);
 	if (chdir(dest) != 0)
 	{
-		err = strerror(errno);
-		fprintf(stderr, "%s: %s: %s: %s\n", shell, args[0], args[1], err);
+		err = "can't cd to";
+		fprintf(stderr, "%s: 1: %s: %s %s\n", shell, args[0], err, args[1]);
 		return (1);
 	}
 	setenv("PWD", getcwd(cwdir_buf, PATH_MAX), 1);
