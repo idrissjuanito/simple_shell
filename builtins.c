@@ -79,9 +79,19 @@ int change_dir(char **args, char *shell)
 	char *dest, *err;
 
 	if (!args[1])
+	{
 		dest = getenv("HOME");
+		if (!dest)
+			dest = getcwd(cwdir_buf, PATH_MAX);
+	}
 	else if (strcmp(args[1], "-") == 0)
+	{
+
 		dest = getenv("OLDPWD");
+		if (!dest)
+			dest = getcwd(cwdir_buf, PATH_MAX);
+		printf("%s\n", dest);
+	}
 	else
 		dest = args[1];
 	setenv("OLDPWD", getcwd(cwdir_buf, PATH_MAX), 1);
