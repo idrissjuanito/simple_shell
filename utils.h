@@ -8,6 +8,7 @@
 #include <stdlib.h>
 #include <signal.h>
 #include <sys/types.h>
+#include <limits.h>
 extern char **environ;
 /**
  * struct exit_func - exit function handlers types
