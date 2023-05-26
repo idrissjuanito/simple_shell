@@ -61,6 +61,8 @@ char *find_path(char *cmd)
 	char *path_env, pathname[100], *paths, *path = NULL;
 
 	path_env = getenv("PATH");
+	if(!path_env)
+		return (NULL);
 	paths = malloc(300 * sizeof(char));
 	if (!paths)
 		return (NULL);

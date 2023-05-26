@@ -65,7 +65,7 @@ void interact_shell(char **line, char *shell)
 		path = parse_cmd(args);
 		if (!path)
 		{
-			perror(shell);
+			fprintf(stderr, "%s: 1: %s: not found\n", shell, args[0]);
 			continue;
 		}
 		status = run_cmd(path, args, shell);
@@ -98,7 +98,7 @@ void non_interact_shell(char **line, char *shell)
 		path = parse_cmd(args);
 		if (!path)
 		{
-			perror(shell);
+			fprintf(stderr, "%s: 1: %s: not found\n", shell, args[0]);
 			continue;
 		}
 		run_cmd(path, args, shell);
