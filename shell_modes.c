@@ -15,7 +15,7 @@ int exec_command(char **cmd, char *shell)
 		int status = 0;
 		char *path = NULL;
 
-		if (cmd[0][0] == '/')
+		if (cmd[0][0] == '/' || cmd[0][0] == '.')
 			path = check_path(cmd[0]);
 		else
 			path = find_path(cmd[0]);

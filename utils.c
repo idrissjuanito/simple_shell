@@ -96,7 +96,11 @@ int break_cmd(char **args, char *cmd, char *delim)
 		return (1);
 	args[i] = token;
 	while ((token = strtok(NULL, delim)))
+	{
+		if (token[0] == '#')
+			break;
 		args[++i] = token;
+	}
 	args[++i] = NULL;
 	return (0);
 }
