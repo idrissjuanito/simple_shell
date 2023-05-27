@@ -90,10 +90,10 @@ int break_cmd(char **args, char *cmd, char *delim)
 
 	nosp_cmd = trim_string(cmd);
 	if (!nosp_cmd)
-		return (1);
+		return (-1);
 	token = strtok(nosp_cmd, delim);
 	if (!token)
-		return (1);
+		return (-1);
 	args[i] = token;
 	while ((token = strtok(NULL, delim)))
 	{
@@ -102,5 +102,11 @@ int break_cmd(char **args, char *cmd, char *delim)
 		args[++i] = token;
 	}
 	args[++i] = NULL;
+	if (strcmp(delim, "|") == 0)
+		return (2);
+	if (strcmp(delim, "&") == 0)
+		return (1);
+	if (strcmp(delim, ";") == 0)
+		return (3);
 	return (0);
 }

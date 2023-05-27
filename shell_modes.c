@@ -22,7 +22,7 @@ int exec_command(char **cmd, char *shell)
 		if (!path)
 		{
 			fprintf(stderr, "%s: 1: %s: not found\n", shell, cmd[0]);
-			return (status);
+			return (1);
 		}
 		switch (fork())
 		{
@@ -50,14 +50,17 @@ int exec_command(char **cmd, char *shell)
  */
 int run_cmd(char *line, char *shell)
 {
-	int status = 0, i = 0;
+	int status = 0, i = 0, is_logic = 0;
 	char *args[100], *commands[100];
 
-	if (break_cmd(commands, line, ";") != 0)
+	is_logic += break_cmd(commands, line, ";");
+	is_logic += break_cmd(commands, line, "|");
+	is_logic += break_cmd(commands, line, "&");
+	if (is_logic == -1)
 		return (status);
 	while (commands[i])
 	{
-		if (break_cmd(args, commands[i], " ") != 0)
+		if (break_cmd(args, commands[i], " ") == -1)
 		{
 			i++;
 			continue;
@@ -68,6 +71,10 @@ int run_cmd(char *line, char *shell)
 			continue;
 		}
 		status = exec_command(args, shell);
+		if (status != 0 && is_logic == 1)
+			break;
+		if (status == 0 && is_logic == 2)
+			break;
 		i++;
 	}
 	return (status);
