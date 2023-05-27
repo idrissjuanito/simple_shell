@@ -14,7 +14,6 @@ int main(int argc, char **argv)
 	char *line = NULL;
 
 	signal(SIGINT, handle_signals);
-	/*_on_exit(handle_exit, &line);*/
 	on_exit(handle_exit, &line);
 
 	if (!isatty(STDIN_FILENO))

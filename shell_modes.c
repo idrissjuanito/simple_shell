@@ -46,7 +46,7 @@ int exec_command(char **cmd, char *shell)
  * @line: command typed in shell
  * @shell: running shell
  *
- * Return: nothing
+ * Return: status of execution
  */
 int run_cmd(char *line, char *shell)
 {

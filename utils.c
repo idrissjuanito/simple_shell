@@ -25,7 +25,6 @@ char *trim_string(char *str)
 	str_end[1] = '\0';
 	return (str);
 }
-
 /**
  * check_path - validates a path
  *
@@ -46,7 +45,6 @@ char *check_path(char *p)
 	strcpy(pathname, p);
 	return (pathname);
 }
-
 /**
  * find_path - finds the path of a command
  *
@@ -56,12 +54,12 @@ char *check_path(char *p)
  */
 char *find_path(char *cmd)
 {
-	char *path_env, pathname[100], *paths, *path = NULL;
+	char *path_env, pathname[300], *paths, *path = NULL;
 
 	path_env = getenv("PATH");
 	if (!path_env)
 		return (NULL);
-	paths = malloc(100 * sizeof(char));
+	paths = malloc(300 * sizeof(char));
 	if (!paths)
 		return (NULL);
 	path_env = strcpy(paths, path_env);
@@ -76,12 +74,12 @@ char *find_path(char *cmd)
 	free(path_env);
 	return (path);
 }
-
 /**
  * break_cmd - spilts a command into arguments
  *
  * @args: array of strings to store arguments
  * @cmd: command to slipt
+ * @delim: delimiter characters
  *
  * Return: nothing
  */
