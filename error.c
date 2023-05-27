@@ -9,7 +9,6 @@
  */
 void exitOnError(char *shell)
 {
-	printf("> value of shell %s\n", shell);
 	fprintf(stderr, "%s: %s\n", shell, strerror(errno));
 	exit(EXIT_FAILURE);
 }

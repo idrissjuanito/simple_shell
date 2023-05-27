@@ -38,15 +38,13 @@ char *check_path(char *p)
 	char *pathname;
 	struct stat file_struct;
 
-	if (stat(p, &file_struct) == 0)
-	{
-		pathname = malloc(100 * sizeof(char));
-		if (!pathname)
-			return (NULL);
-		strcpy(pathname, p);
-		return (pathname);
-	}
-	return (NULL);
+	if (stat(p, &file_struct) != 0)
+		return (NULL);
+	pathname = malloc(100 * sizeof(char));
+	if (!pathname)
+		return (NULL);
+	strcpy(pathname, p);
+	return (pathname);
 }
 
 /**
@@ -61,9 +59,9 @@ char *find_path(char *cmd)
 	char *path_env, pathname[100], *paths, *path = NULL;
 
 	path_env = getenv("PATH");
-	if(!path_env)
+	if (!path_env)
 		return (NULL);
-	paths = malloc(300 * sizeof(char));
+	paths = malloc(100 * sizeof(char));
 	if (!paths)
 		return (NULL);
 	path_env = strcpy(paths, path_env);
@@ -87,44 +85,20 @@ char *find_path(char *cmd)
  *
  * Return: nothing
  */
-void break_cmd(char **args, char *cmd)
+int break_cmd(char **args, char *cmd, char *delim)
 {
-	char *token = NULL;
+	char *token, *nosp_cmd;
 	int i = 0;
 
-	token = strtok(cmd, " ");
+	nosp_cmd = trim_string(cmd);
+	if (!nosp_cmd)
+		return (1);
+	token = strtok(nosp_cmd, delim);
+	if (!token)
+		return (1);
 	args[i] = token;
-	while ((token = strtok(NULL, " ")))
-		args[++i] = trim_string(token);
+	while ((token = strtok(NULL, delim)))
+		args[++i] = token;
 	args[++i] = NULL;
-}
-/**
- * parse_cmd - parses a string into command line format
- *
- * @args: command line arguments passed
- *
- * Return: array of chars with command and its arguments
- */
-char *parse_cmd(char **args)
-{
-	char *token = NULL, *path = NULL;
-	char *pathdirs, cmd[80];
-	int i = 0;
-
-	strcpy(cmd, args[0]);
-	token = strtok(args[0], "/");
-	i = 0;
-	while ((token = strtok(NULL, "/")))
-	{
-		pathdirs = token;
-		i++;
-	}
-	if (i)
-	{
-		path = check_path(cmd);
-		args[0] = pathdirs;
-	}
-	else
-		path = find_path(cmd);
-	return (path);
+	return (0);
 }

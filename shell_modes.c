@@ -3,35 +3,77 @@
 #include "utils.h"
 
 /**
+ * exec_command - creates a process for executing commands
+ *
+ * @cmd:  command to run
+ * @shell: running shell
+ *
+ * Return: status returned by child proccess
+ */
+int exec_command(char **cmd, char *shell)
+{
+		int status = 0;
+		char *path = NULL;
+
+		if (cmd[0][0] == '/')
+			path = check_path(cmd[0]);
+		else
+			path = find_path(cmd[0]);
+		if (!path)
+		{
+			fprintf(stderr, "%s: 1: %s: not found\n", shell, cmd[0]);
+			return (status);
+		}
+		switch (fork())
+		{
+			case -1:
+				exitOnError(shell);
+				break;
+			case 0:
+				execve(path, cmd, environ);
+				exitOnError(shell);
+				break;
+			default:
+				wait(&status);
+				break;
+		}
+		free(path);
+	return (status);
+}
+/**
  * run_cmd - creates a child process and runs command
  *
- * @p: path of the command to run
- * @args: arguments of the command to run
+ * @line: command typed in shell
  * @shell: running shell
  *
  * Return: nothing
  */
-int run_cmd(char *p, char **args, char *shell)
+int run_cmd(char *line, char *shell)
 {
-	int status = 0;
+	int status = 0, i = 0;
+	char *args[100], *commands[100];
 
-	switch (fork())
+	if (break_cmd(commands, line, ";") != 0)
+		return (status);
+	while (commands[i])
 	{
-		case -1:
-			exitOnError(shell);
-			break;
-		case 0:
-			execve(p, args, environ);
-			exitOnError(shell);
-			break;
-		default:
-			wait(&status);
-			break;
+		if (break_cmd(args, commands[i], " ") != 0)
+		{
+			i++;
+			continue;
+		}
+		if (builtin(args, shell))
+		{
+			i++;
+			continue;
+		}
+		status = exec_command(args, shell);
+		i++;
 	}
-	free(p);
-
 	return (status);
 }
+
+
 /**
  * interact_shell - run shell in non interactive mode
  *
@@ -44,7 +86,6 @@ void interact_shell(char **line, char *shell)
 {
 	size_t len = 0;
 	ssize_t cread;
-	char *path, *args[100];
 	int status = 0;
 
 	while (1)
@@ -57,18 +98,7 @@ void interact_shell(char **line, char *shell)
 			perror(shell);
 			continue;
 		}
-		if (!trim_string(*line))
-			continue;
-		break_cmd(args, *line);
-		if (builtin(args, shell))
-			continue;
-		path = parse_cmd(args);
-		if (!path)
-		{
-			fprintf(stderr, "%s: 1: %s: not found\n", shell, args[0]);
-			continue;
-		}
-		status = run_cmd(path, args, shell);
+		status = run_cmd(*line, shell);
 	}
 	exit(status);
 }
@@ -85,24 +115,10 @@ void non_interact_shell(char **line, char *shell)
 {
 	size_t len = 0;
 	ssize_t cread = 0;
-	char *args[100], *path;
 	int status = 0;
 
 	while ((cread = getline(line, &len, stdin)) > 0)
-	{
-		if (!trim_string(*line))
-			continue;
-		break_cmd(args, *line);
-		if (builtin(args, shell))
-			continue;
-		path = parse_cmd(args);
-		if (!path)
-		{
-			fprintf(stderr, "%s: 1: %s: not found\n", shell, args[0]);
-			continue;
-		}
-		run_cmd(path, args, shell);
-	}
+		status = run_cmd(*line, shell);
 
 	exit(status);
 }

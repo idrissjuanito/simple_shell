@@ -23,13 +23,14 @@ typedef struct exit_func
 } exit_func_t;
 void _on_exit(void (*exit_func)(int, void *), void *args);
 void exit_(int status);
-char *parse_cmd(char **args);
+int exec_command(char **args, char *shell);
+char *check_path(char *p);
 void interact_shell(char **line, char *shell);
 void non_interact_shell(char **line, char *shell);
 void exitOnError(char *shell);
 char *find_path(char *cmd);
 char *trim_string(char *cmd);
-void break_cmd(char **args, char *cmd);
+int break_cmd(char **args, char *cmd, char *delim);
 void handle_signals(int sig);
 void handle_exit(int status, void *line);
 ssize_t _getline(char **line, size_t *len, FILE *stream);
